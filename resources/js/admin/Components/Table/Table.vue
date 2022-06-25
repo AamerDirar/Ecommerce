@@ -30,6 +30,12 @@ import Th from "@/Components/Table/Th.vue";
             <tr class="border-b" v-for="item in items.data" :key="item.id">
               <slot :item="item"></slot>
             </tr>
+            <tr v-if="items.data.length === 0">
+              <Td :colspan="headers.length">
+                No data available.
+              </Td>
+
+            </tr>
           </tbody>
         </table>
       </div>

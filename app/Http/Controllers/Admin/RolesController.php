@@ -5,18 +5,30 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RolesRequest;
 use App\Http\Resources\RolesResource;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
+    private string $routeResourceName = 'roles';
+
     public function index(Request $request)
     {
-        $roles = Role::latest('id')->paginate(10);
+        $roles = Role::query()
+                     ->select([
+                        'id',
+                        'name',
+                        'created_at',
+                     ])
+                     ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
+                     ->latest('id')
+                     ->paginate(10);
 
         return Inertia::render('Role/Index', [
-            'roles'   => RolesResource::collection($roles),
+            'title' => 'Roles', 
+            'items' => RolesResource::collection($roles),
             'headers' => [
                 [
                     'label' => 'Name',
@@ -31,6 +43,8 @@ class RolesController extends Controller
                     'name'  => 'actions'  
                 ]
             ],
+            'filters' => (object) $request->all(),
+            'routeResourceName' =>        $this->routeResourceName,
         ]);
     }
 
@@ -63,5 +77,12 @@ class RolesController extends Controller
         $role->update($request->validated());
 
         return redirect()->route('admin.roles.index')->with('success', 'Role updated successfully.');
+    }
+
+    public function destroy(Role $role)
+    {
+        $role->delete();
+
+        return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully.');
     }
 }

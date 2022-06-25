@@ -29,8 +29,9 @@
                 <Edit class="m-4 h-4" />
             </Link>
         </button>
-        <button v-if="showDelete">
-            <Trash  class="m-4 h-4" />
+         <button v-if="showDelete"
+                @click="$emit('deleteClicked', $event)">
+            <Trash class="w-4 h-4" />
         </button>
     </div>
 </template>

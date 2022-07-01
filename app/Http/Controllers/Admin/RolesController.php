@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RolesRequest;
-use App\Http\Resources\RolesResource;
+use App\Http\Resources\RoleResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -28,7 +28,7 @@ class RolesController extends Controller
 
         return Inertia::render('Role/Index', [
             'title' => 'Roles', 
-            'items' => RolesResource::collection($roles),
+            'items' => RoleResource::collection($roles),
             'headers' => [
                 [
                     'label' => 'Name',
@@ -53,6 +53,7 @@ class RolesController extends Controller
         return Inertia::render('Role/Create', [
             'edit' => false,
             'title' => 'Add Role',
+            'routeResourceName' => $this->routeResourceName,
         ]);
     }
 
@@ -68,7 +69,8 @@ class RolesController extends Controller
         return Inertia::render('Role/Create', [
             'edit'  => true,
             'title' => 'Edit Role',
-            'role'  => new RolesResource($role),
+            'item'  => new RoleResource($role),
+            'routeResourceName' => $this->routeResourceName,
         ]);
     }
 

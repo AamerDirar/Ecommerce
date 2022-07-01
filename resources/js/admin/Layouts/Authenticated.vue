@@ -32,6 +32,9 @@ const showingNavigationDropdown = ref(false);
                                 <BreezeNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                                     Dashboard
                                 </BreezeNavLink>
+                                 <BreezeNavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
+                                    Permissions
+                                </BreezeNavLink>
                                 <BreezeNavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
                                     Roles
                                 </BreezeNavLink>
@@ -81,7 +84,9 @@ const showingNavigationDropdown = ref(false);
                         <BreezeResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                             Dashboard
                         </BreezeResponsiveNavLink>
-
+                        <BreezeResponsiveNavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
+                            Permissions
+                        </BreezeResponsiveNavLink>
                         <BreezeResponsiveNavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
                             Roles
                         </BreezeResponsiveNavLink>

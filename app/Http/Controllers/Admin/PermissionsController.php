@@ -16,32 +16,32 @@ class PermissionsController extends Controller
 
     public function index(Request $request)
     {
-        $roles = Permission::query()
-                     ->select([
-                        'id',
-                        'name',
-                        'created_at',
-                     ])
-                     ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
-                     ->latest('id')
-                     ->paginate(10);
+        $permissions = Permission::query()
+            ->select([
+                'id',
+                'name',
+                'created_at',
+            ])
+            ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
+            ->latest('id')
+            ->paginate(10);
 
         return Inertia::render('Permission/Index', [
-            'title' => 'Pemissions', 
-            'items' => PermissionResource::collection($roles),
+            'title' => 'Permissions',
+            'items' => PermissionResource::collection($permissions),
             'headers' => [
                 [
                     'label' => 'Name',
-                    'name'  => 'name'  
+                    'name' => 'name',
                 ],
                 [
                     'label' => 'Created At',
-                    'name'  => 'created_at'  
+                    'name' => 'created_at',
                 ],
                 [
                     'label' => 'Actions',
-                    'name'  => 'actions'  
-                ]
+                    'name' => 'actions',
+                ],
             ],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
@@ -64,27 +64,27 @@ class PermissionsController extends Controller
         return redirect()->route('admin.permissions.index')->with('success', 'Permission created successfully.');
     }
 
-    public function edit(Permission $Permission)
+    public function edit(Permission $permission)
     {
         return Inertia::render('Permission/Create', [
             'edit' => true,
             'title' => 'Edit Permission',
-            'item' => new PermissionResource($Permission),
+            'item' => new PermissionResource($permission),
             'routeResourceName' => $this->routeResourceName,
         ]);
     }
 
-    public function update(PermissionsRequest $request, Permission $Permission)
+    public function update(PermissionsRequest $request, Permission $permission)
     {
-        $Permission->update($request->validated());
+        $permission->update($request->validated());
 
         return redirect()->route('admin.permissions.index')->with('success', 'Permission updated successfully.');
     }
 
-    public function destroy(Permission $Permission)
+    public function destroy(Permission $permission)
     {
-        $Permission->delete();
+        $permission->delete();
 
-        return redirect()->route('admin.permissions.index')->with('success', 'Permission deleted successfully.');
+        return back()->with('success', 'Permission deleted successfully.');
     }
 }

@@ -25,6 +25,7 @@ class RolesRequest extends FormRequest
     public function rules()
     {
         $model = $this->route('role');
+
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique("roles")->ignore($model->id ?? null)],
         ];

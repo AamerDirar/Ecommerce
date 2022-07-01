@@ -17,34 +17,34 @@ class RolesController extends Controller
     public function index(Request $request)
     {
         $roles = Role::query()
-                     ->select([
-                        'id',
-                        'name',
-                        'created_at',
-                     ])
-                     ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
-                     ->latest('id')
-                     ->paginate(10);
+            ->select([
+                'id',
+                'name',
+                'created_at',
+            ])
+            ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
+            ->latest('id')
+            ->paginate(10);
 
         return Inertia::render('Role/Index', [
-            'title' => 'Roles', 
+            'title' => 'Roles',
             'items' => RoleResource::collection($roles),
             'headers' => [
                 [
                     'label' => 'Name',
-                    'name'  => 'name'  
+                    'name' => 'name',
                 ],
                 [
                     'label' => 'Created At',
-                    'name'  => 'created_at'  
+                    'name' => 'created_at',
                 ],
                 [
                     'label' => 'Actions',
-                    'name'  => 'actions'  
-                ]
+                    'name' => 'actions',
+                ],
             ],
             'filters' => (object) $request->all(),
-            'routeResourceName' =>        $this->routeResourceName,
+            'routeResourceName' => $this->routeResourceName,
         ]);
     }
 
@@ -67,9 +67,9 @@ class RolesController extends Controller
     public function edit(Role $role)
     {
         return Inertia::render('Role/Create', [
-            'edit'  => true,
+            'edit' => true,
             'title' => 'Edit Role',
-            'item'  => new RoleResource($role),
+            'item' => new RoleResource($role),
             'routeResourceName' => $this->routeResourceName,
         ]);
     }
@@ -85,6 +85,6 @@ class RolesController extends Controller
     {
         $role->delete();
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully.');
+        return back()->with('success', 'Role deleted successfully.');
     }
 }

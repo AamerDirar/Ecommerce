@@ -15,9 +15,9 @@ class RoleResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'                   => $this->id,
-            'name'                 => $this->name,
-            'created_at_formatted' => $this->when($this->created_at, function() {
+            'id' => $this->id,
+            'name' => $this->name,
+            'created_at_formatted' => $this->when($this->created_at, function () {
                 return $this->created_at->toDayDateTimeString();
             }),
         ];

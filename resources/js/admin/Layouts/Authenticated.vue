@@ -5,9 +5,8 @@ import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import Alert from '@/Components/Alert.vue';
+import Alert from "@/Components/Alert.vue";
 import { Link } from '@inertiajs/inertia-vue3';
-
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -29,14 +28,8 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <BreezeNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                                    Dashboard
-                                </BreezeNavLink>
-                                 <BreezeNavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
-                                    Permissions
-                                </BreezeNavLink>
-                                <BreezeNavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
-                                    Roles
+                                <BreezeNavLink v-show="menu.isVisible" v-for="menu in $page.props.menus" :key="menu.label" :href="menu.url" :active="menu.isActive">
+                                    {{ menu.label }}
                                 </BreezeNavLink>
                             </div>
                         </div>
@@ -83,12 +76,6 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                             Dashboard
-                        </BreezeResponsiveNavLink>
-                        <BreezeResponsiveNavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
-                            Permissions
-                        </BreezeResponsiveNavLink>
-                        <BreezeResponsiveNavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
-                            Roles
                         </BreezeResponsiveNavLink>
                     </div>
 

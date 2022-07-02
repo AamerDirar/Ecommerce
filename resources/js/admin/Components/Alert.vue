@@ -1,22 +1,29 @@
 <script setup>
     import { usePage } from "@inertiajs/inertia-vue3";
-    import { onMounted, ref, watch } from "vue";
+    import { ref, watch } from "vue";
 
     const message = ref("");
+    const timeoutHandler = ref(null);
 
     watch(
     () => usePage().props.value.flash?.success,
-    (successMessage) => message.value = successMessage,
+    (successMessage) => {
+        message.value = successMessage;
+
+        if (successMessage) {
+            clearTimeout(timeoutHandler.value);
+
+            timeoutHandler.value = setTimeout(() => {
+                message.value = "";
+                usePage().props.value.flash.success = "";
+            }, 5000); 
+        }
+    },
     {
         immediate: true,
     }
 )
 
-    onMounted(() => {
-       setTimeout(() => {
-           message.value = "";
-       }, 5000); 
-    });
 
 </script>
 

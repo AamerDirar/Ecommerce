@@ -4,15 +4,25 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RolesRequest;
+use App\Http\Resources\PermissionResource;
 use App\Http\Resources\RoleResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
     private string $routeResourceName = 'roles';
+
+    public function __construct()
+    {
+        $this->middleware('can:view roles list')->only('index');
+        $this->middleware('can:create role')->only(['create', 'store']);
+        $this->middleware('can:edit role')->only(['edit', 'update']);
+        $this->middleware('can:delete role')->only('destroy');
+    }
 
     public function index(Request $request)
     {
@@ -45,6 +55,9 @@ class RolesController extends Controller
             ],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
+            'can' => [
+                'create' => $request->user()->can('create role'),
+            ],
         ]);
     }
 
@@ -59,18 +72,21 @@ class RolesController extends Controller
 
     public function store(RolesRequest $request)
     {
-        Role::create($request->validated());
+        $role = Role::create($request->validated());
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role created successfully.');
+        return redirect()->route('admin.roles.edit', $role)->with('success', 'Role created successfully.');
     }
 
     public function edit(Role $role)
     {
+        $role->load(['permissions:permissions.id,permissions.name']);
+
         return Inertia::render('Role/Create', [
             'edit' => true,
             'title' => 'Edit Role',
             'item' => new RoleResource($role),
             'routeResourceName' => $this->routeResourceName,
+            'permissions' => PermissionResource::collection(Permission::get(['id', 'name'])),
         ]);
     }
 

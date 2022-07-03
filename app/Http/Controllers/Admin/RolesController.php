@@ -74,7 +74,7 @@ class RolesController extends Controller
     {
         $role = Role::create($request->validated());
 
-        return redirect()->route('admin.roles.edit', $role)->with('success', 'Role created successfully.');
+        return redirect()->route("admin.{$this->routeResourceName}.edit", $role)->with('success', 'Role created successfully.');
     }
 
     public function edit(Role $role)
@@ -94,7 +94,7 @@ class RolesController extends Controller
     {
         $role->update($request->validated());
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role updated successfully.');
+        return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Role updated successfully.');
     }
 
     public function destroy(Role $role)

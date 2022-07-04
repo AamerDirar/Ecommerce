@@ -15,7 +15,6 @@ import Input from "@/Components/Input.vue";
 import Filters from "./Filters.vue";
 import useDeleteItem from "@/Composables/useDeleteItem.js";
 import useFilters from "@/Composables/useFilters.js";
-
 const props = defineProps({
     title: {
         type: String,
@@ -38,6 +37,7 @@ const props = defineProps({
         required: true,
     },
     can: Object,
+    roles: Array,
 });
 const {
     deleteModal,
@@ -66,9 +66,11 @@ const { filters, isLoading } = useFilters({
         </template>
 
         <Container>
-            <Filters v-model="filters" />
+            <Filters v-model="filters"
+                     :roles="roles" />
 
-            <Button v-if="can.create" :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
+            <Button v-if="can.create"
+                    :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
 
             <Card class="mt-4"
                   :is-loading="isLoading">
@@ -78,11 +80,14 @@ const { filters, isLoading } = useFilters({
                         <Td>
                             {{ item.name }}
                         </Td>
-                         <Td>
+                        <Td>
                             {{ item.email }}
                         </Td>
                         <Td>
-                            <Button v-for="role in item.roles" :key="role.id" color="blue" small>
+                            <Button v-for="role in item.roles"
+                                    :key="role.id"
+                                    color="blue"
+                                    small>
                                 {{ role.name }}
                             </Button>
                         </Td>
@@ -90,9 +95,9 @@ const { filters, isLoading } = useFilters({
                             {{ item.created_at_formatted }}
                         </Td>
                         <Td>
-                            <Actions :show-edit="item.can.edit"
-                                     :show-delete="item.can.delete" 
-                                     :edit-link="route(`admin.${routeResourceName}.edit`, {id: item.id})"
+                            <Actions :edit-link="route(`admin.${routeResourceName}.edit`, {id: item.id})"
+                                     :show-edit="item.can.edit"
+                                     :show-delete="item.can.delete"
                                      @deleteClicked="showDeleteModal(item)" />
                         </Td>
                     </template>

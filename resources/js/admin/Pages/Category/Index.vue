@@ -1,57 +1,60 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import { Head } from "@inertiajs/inertia-vue3";
-import { Inertia } from "@inertiajs/inertia";
-import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
-import Container from "@/Components/Container.vue";
-import Card from "@/Components/Card/Card.vue";
-import Table from "@/Components/Table/Table.vue";
-import Td from "@/Components/Table/Td.vue";
-import Actions from "@/Components/Table/Actions.vue";
-import Button from "@/Components/Button.vue";
-import Modal from "@/Components/Modal.vue";
-import Label from "@/Components/Label.vue";
-import Input from "@/Components/Input.vue";
-import Filters from "./Filters.vue";
-import useDeleteItem from "@/Composables/useDeleteItem.js";
-import useFilters from "@/Composables/useFilters.js";
-const props = defineProps({
-    title: {
-        type: String,
-        required: true,
-    },
-    items: {
-        type: Object,
-        default: () => ({}),
-    },
-    headers: {
-        type: Array,
-        default: () => [],
-    },
-    filters: {
-        type: Object,
-        default: () => ({}),
-    },
-    routeResourceName: {
-        type: String,
-        required: true,
-    },
-    can: Object,
-    rootCategories: Array,
-});
-const {
-    deleteModal,
-    itemToDelete,
-    isDeleting,
-    showDeleteModal,
-    handleDeleteItem,
-} = useDeleteItem({
-    routeResourceName: props.routeResourceName,
-});
-const { filters, isLoading } = useFilters({
-    filters: props.filters,
-    routeResourceName: props.routeResourceName,
-});
+    import { onMounted, ref, watch } from "vue";
+    import { Head } from "@inertiajs/inertia-vue3";
+    import { Inertia } from "@inertiajs/inertia";
+    import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
+    import Container from "@/Components/Container.vue";
+    import Card from "@/Components/Card/Card.vue";
+    import Table from "@/Components/Table/Table.vue";
+    import Td from "@/Components/Table/Td.vue";
+    import Actions from "@/Components/Table/Actions.vue";
+    import Button from "@/Components/Button.vue";
+    import Modal from "@/Components/Modal.vue";
+    import Label from "@/Components/Label.vue";
+    import Input from "@/Components/Input.vue";
+    import Filters from "./Filters.vue";
+    import useDeleteItem from "@/Composables/useDeleteItem.js";
+    import useFilters from "@/Composables/useFilters.js";
+    import AddNew from "@/Components/AddNew.vue";
+
+    const props = defineProps({
+        title: {
+            type: String,
+            required: true,
+        },
+        items: {
+            type: Object,
+            default: () => ({}),
+        },
+        headers: {
+            type: Array,
+            default: () => [],
+        },
+        filters: {
+            type: Object,
+            default: () => ({}),
+        },
+        routeResourceName: {
+            type: String,
+            required: true,
+        },
+        can: Object,
+        rootCategories: Array,
+    });
+    const {
+        deleteModal,
+        itemToDelete,
+        isDeleting,
+        showDeleteModal,
+        handleDeleteItem,
+    } = useDeleteItem({
+        routeResourceName: props.routeResourceName,
+    });
+    const { filters, isLoading } = useFilters({
+        filters: props.filters,
+        routeResourceName: props.routeResourceName,
+    });
+
 </script>
 
 <template>
@@ -66,11 +69,19 @@ const { filters, isLoading } = useFilters({
         </template>
 
         <Container>
-            <Filters v-model="filters"
-                     :categories="rootCategories" />
-
-            <Button v-if="can.create"
-                    :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
+        
+            <AddNew>
+                <Button v-if="can.create"
+                        :href="route(`admin.${routeResourceName}.create`)"
+                >
+                    Add New
+                </Button>
+ 
+                <template #filters>
+                    <Filters v-model="filters"
+                             :categories="rootCategories" />
+                </template>
+            </AddNew>
 
             <Card class="mt-4"
                   :is-loading="isLoading">

@@ -24,7 +24,7 @@ watch(
 </script>
 
 <template>
-    <Card class="mb-4">
+    <Card class="mb-4 mt-2">
         <template #header>
             Filters
         </template>

@@ -21,7 +21,7 @@ import Th from "@/Components/Table/Th.vue";
         <table class="min-w-full">
           <thead class="border-b">
             <tr>
-                <Th v-for="header in headers" :key="header.label">
+                <Th v-for="header in headers" :key="header.label" :class="`${header.classes} font-bold`">
                     {{ header.label }}
                 </Th>
             </tr>

@@ -1,6 +1,5 @@
 <script setup>
     import { Head, useForm } from '@inertiajs/inertia-vue3';
-    import { onMounted } from 'vue';
     import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
     import Container from "@/Components/Container.vue";
     import Card from "@/Components/Card/Card.vue";
@@ -29,18 +28,12 @@
     });
 
     const form = useForm({
-        name: ''
+         name: props.item.name ?? "",
     });
 
     const submit = () => {
         props.edit ? form.put(route(`admin.${props.routeResourceName}.update`, {id: props.item.id})) : form.post(route(`admin.${props.routeResourceName}.store`));     
     };
-
-    onMounted(() => {
-        if (props.edit) {
-            form.name = props.item.name;
-        }
-    });
 
 </script>
 

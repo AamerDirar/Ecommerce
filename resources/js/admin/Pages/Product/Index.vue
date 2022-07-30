@@ -89,6 +89,16 @@ const { filters, isLoading } = useFilters({
                                 {{ item.name }}
                             </div>
                         </Td>
+                         <Td>
+                            <div class="whitespace-pre-wrap">
+                                {{ item }}
+                            </div>
+                        </Td>
+                         <Td>
+                            <div class="whitespace-pre-wrap">
+                                {{ item.name }}
+                            </div>
+                        </Td>
                         <Td class="text-right">
                             {{ item.cost_price }}
                         </Td>

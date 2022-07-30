@@ -50,7 +50,7 @@
     } = useDeleteItem({
         routeResourceName: props.routeResourceName,
     });
-    const { filters, isLoading } = useFilters({
+    const { filters, isLoading, isFilled } = useFilters({
         filters: props.filters,
         routeResourceName: props.routeResourceName,
     });
@@ -70,7 +70,7 @@
 
         <Container>
         
-            <AddNew>
+            <AddNew :show="isFilled">
                 <Button v-if="can.create"
                         :href="route(`admin.${routeResourceName}.create`)"
                 >

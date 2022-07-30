@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DetachPermissionFromRoleController;
 use App\Http\Controllers\Admin\PermissionsController;
+use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 
@@ -17,6 +18,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('permissions', PermissionsController::class);
     Route::resource('users', UsersController::class);
     Route::resource('categories', CategoriesController::class);
+    Route::resource('products', ProductsController::class);
 });
 
 

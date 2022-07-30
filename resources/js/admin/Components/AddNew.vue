@@ -3,7 +3,14 @@
     import Button from "@/Components/Button.vue";
     import FilterIcon from "@/Components/Icons/Filter.vue";
 
-    const showFilters = ref(false);
+    const props = defineProps({
+        show: {
+            type: Boolean,
+            default: false,
+        }
+    });
+
+    const showFilters = ref(props.show ?? false);
 
 </script>
 

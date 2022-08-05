@@ -82,14 +82,6 @@ class ProductsController extends Controller
                     'name' => 'name',
                 ],
                 [
-                    'label' => 'Category Name',
-                    'name' => 'name',
-                ],
-                [
-                    'label' => 'Sub Category Name',
-                    'name' => 'name',
-                ],
-                [
                     'label' => 'Cost Price',
                     'name' => 'cost_price',
                 ],
@@ -152,7 +144,7 @@ class ProductsController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load(['categories:id,parent_id']);
+        $product->load(['categories:id,parent_id', 'media']);
 
         return Inertia::render('Product/Create', [
             'edit' => true,

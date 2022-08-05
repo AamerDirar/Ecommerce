@@ -17,6 +17,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->whenNotNull($this->name),
+            'slug' => $this->whenNotNull($this->slug),
             'description' => $this->whenNotNull($this->description),
             'cost_price' => $this->whenNotNull($this->cost_price),
             'price' => $this->whenNotNull($this->price),
@@ -39,6 +40,15 @@ class ProductResource extends JsonResource
                 'edit' => $request->user()?->can('edit product'),
                 'delete' => $request->user()?->can('delete product'),
             ],
+            'images' => $this->whenLoaded(
+                'media',
+                fn () => $this->getMedia()->map(
+                    fn ($media) => [
+                        'id' => $media->id,
+                        'html' => $media->toHtml(),
+                    ]
+                )
+            )
         ];
     }
 }

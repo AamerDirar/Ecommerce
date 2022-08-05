@@ -1,5 +1,6 @@
 <script setup>
 import { Head, useForm } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
 import { computed, watch } from "vue";
 import kebabCase from "lodash/kebabCase";
 import replace from "lodash/replace";
@@ -11,6 +12,9 @@ import InputGroup from "@/Components/InputGroup.vue";
 import SelectGroup from "@/Components/SelectGroup.vue";
 import CheckboxGroup from "@/Components/CheckboxGroup.vue";
 import EditorGroup from "@/Components/EditorGroup.vue";
+import ImageUpload from "@/Components/ImageUpload.vue";
+import CrossIcon from "@/Components/Icons/Cross.vue";
+
 const props = defineProps({
     edit: {
         type: Boolean,
@@ -73,6 +77,14 @@ const submit = () => {
           )
         : form.post(route(`admin.${props.routeResourceName}.store`));
 };
+
+const maxUploadImageCount = 3;
+
+const deleteImage = (imageId) => {
+    if(!confirm("Are you sure you want to delete this image?")) return;
+
+    Inertia.post(route("admin.images.destroy", { id: imageId }));
+};
 </script>
 <template>
     <Head :title="title" />
@@ -86,6 +98,22 @@ const submit = () => {
             <Card>
                 <form @submit.prevent="submit">
                     <div class="grid grid-cols-2 gap-6">
+                        <div v-if="edit" class="col-span-2">
+                        <div v-if="item.images.length > 0">
+                            <div>Images:</div>
+                            <div class="grid grid-cols-3 gap-6">
+                                <div v-for="image in item.images" :key="image.id" class="bg-gray-50 p-4 rounded-md relative">
+                                    <button type="button" class="absolute right-4 top-4 rounded-full p-2 transition-colors duration-200 hover:bg-red-500 hover:text-white"
+                                            @click.prevent="deleteImage(image.id)">
+                                                <CrossIcon class="w-6 h-6" />
+                                            </button>
+                                    <div v-html="image.html" class="[&_img]:h64 [&_img]:w-full [&_img]:object-contain">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <ImageUpload v-if="item.images.length < maxUploadImageCount" :maxFiles="maxUploadImageCount - item.images.length" model-type="product" :model-id="item.id" />
+                        </div>
                         <InputGroup label="Name"
                                     v-model="form.name"
                                     :error-message="form.errors.name"

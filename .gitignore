@@ -1,6 +1,7 @@
 /node_modules
 /public/css/admin/app.css
 /public/js/admin/app.js
+/public/build
 /public/hot
 /public/storage
 /storage/*.key

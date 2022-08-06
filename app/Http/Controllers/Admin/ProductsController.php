@@ -20,10 +20,10 @@ class ProductsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:view products list')->only('index');
+        $this->middleware('can:view product list')->only('index');
         $this->middleware('can:create product')->only(['create', 'store']);
-        $this->middleware('can:edit product')->only(['edit', 'update']);
-        $this->middleware('can:delete product')->only('destroy');
+        $this->middleware('can:update,product')->only(['edit', 'update']);
+        $this->middleware('can:delete,product')->only('destroy');
     }
 
     public function index(Request $request)
@@ -38,7 +38,9 @@ class ProductsController extends Controller
                 'show_on_slider',
                 'featured',
                 'active',
+                'creator_id',
             ])
+            ->with(['creator:id,name'])
             ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
             ->when(
                 $request->categoryId,
@@ -71,7 +73,7 @@ class ProductsController extends Controller
                 fn (Builder $builder) => $builder->where('show_on_slider', $request->showOnSlider)
             )
             ->latest('id')
-            ->paginate(10);
+            ->paginate(3);
 
         return Inertia::render('Product/Index', [
             'title' => 'Products',
@@ -102,8 +104,12 @@ class ProductsController extends Controller
                     'name' => 'active',
                 ],
                 [
-                    'label' => 'Created At',
+                    'label' => 'Created Date',
                     'name' => 'created_at',
+                ],
+                [
+                    'label' => 'Created By',
+                    'name' => 'creator_id',
                 ],
                 [
                     'label' => 'Actions',

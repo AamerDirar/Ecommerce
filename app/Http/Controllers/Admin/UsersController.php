@@ -18,7 +18,7 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:view users list')->only('index');
+        $this->middleware('can:view user list')->only('index');
         $this->middleware('can:create user')->only(['create', 'store']);
         $this->middleware('can:edit user')->only(['edit', 'update']);
         $this->middleware('can:delete user')->only('destroy');

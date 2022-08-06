@@ -1,5 +1,7 @@
 <script setup>
 import Th from "@/Components/Table/Th.vue";
+import Td from "@/Components/Table/Td.vue";
+import Pagination from "@/Components/Table/Pagination.vue";
 
     defineProps({
         headers: {
@@ -40,5 +42,9 @@ import Th from "@/Components/Table/Th.vue";
         </table>
       </div>
     </div>
+  </div>
+
+  <div v-if="items.meta.links.length>3" class="py-2">
+    <Pagination :links="items.meta.links" />
   </div>
 </template>

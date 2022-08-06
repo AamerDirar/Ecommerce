@@ -50,7 +50,7 @@ const {
 } = useDeleteItem({
     routeResourceName: props.routeResourceName,
 });
-const { filters, isLoading } = useFilters({
+const { filters, isLoading, isFilled } = useFilters({
     filters: props.filters,
     routeResourceName: props.routeResourceName,
 });
@@ -68,7 +68,7 @@ const { filters, isLoading } = useFilters({
         </template>
 
         <Container>
-            <AddNew>
+            <AddNew :show="isFilled">
                 <Button v-if="can.create"
                         :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
 
@@ -106,6 +106,9 @@ const { filters, isLoading } = useFilters({
                         </Td>
                         <Td>
                             {{ item.created_at_formatted }}
+                        </Td>
+                        <Td>
+                            {{ item.creator.name }}
                         </Td>
                         <Td>
                             <Actions :edit-link="route(`admin.${routeResourceName}.edit`, {id: item.id})"
